@@ -23,50 +23,56 @@ define('DBNAME','oe52');
 
 class model{
 
-        static $tableName;
-        static $key;
-        static $value;
+    // static $tableName;
+    static $key;
+    static $value;
+    static $id;
 
-        public function save($id)
+    public function save()
+    {
+        if (static::$idOfColumn == '')
         {
-            self::$tableName = static::$tableName;
-           if (empty($id) )
-            {
-                $array = get_object_vars($this);
-                self::$key = implode(', ', $array);
-                self::$value = implode(', ', array_fill(0, count($array), '?'));
-                $sql = $this->insert(self::$tableName, self::$key, self::$value);
-                $conn = database::getConnection();
-                $statement = $conn->prepare($sql);
-                $statement->execute(static::$dataToInsert);
-            }
-            else
-            {
-                $sql = $this->update(self::$tableName,static::$columnToUpdate, static::$updateData,$id);
-                $conn = database::getConnection();
-                $statement = $conn->prepare($sql);
-                $statement->execute();
-            }
+            $array = get_object_vars($this);
+            self::$key = implode(', ', $array);
+            self::$value = implode(', ', array_fill(0, count($array), '?'));
+            $sql = $this->insert();
+            // echo $sql;
+            $conn = database::getConnection();
+            $statement = $conn->prepare($sql);
+            $statement->execute(static::$dataToInsert);
         }
-
-         private function insert($tableName,$key,$value)
+        else
         {
-          $sql = "INSERT INTO ".$tableName." (".$key.") VALUES (".$value.")";
+            $sql = $this->update();
+            $conn = database::getConnection();
+            $statement = $conn->prepare($sql);
+            $statement->execute();
             return $sql;
+            echo '<br>';
+            //  print_r( static::$columnId);
         }
-         private function update($tableName,$column,$value,$id)
-         {
-           $sql = "UPDATE ".$tableName." SET ".$column." = '".$value."' WHERE id=" .$id;
-             return $sql;
-         }
-        public function delete($id)
-         {
-             $conn = database::getConnection();
-             $sql = "DELETE from ".static::$tableName." WHERE id=".$id;
-             $statement = $conn->prepare($sql);
-             $statement->execute();
-         }
-            }
+    }
+
+    private function insert()
+    {
+        $sql = "INSERT INTO ".static::$tableName." (".self::$key.") VALUES (".self::$value.")";
+        return $sql;
+    }
+    private function update()
+    {
+        $sql = "UPDATE ".static::$tableName." SET ".static::$columnToUpdate." = '".static::$updateData."' WHERE id=".static::$idOfColumn;
+        return $sql;
+    }
+    public function delete()
+    {
+        $conn = database::getConnection();
+        $sql = "DELETE from ".static::$tableName." WHERE id=".static::$idOfColumn;
+        $statement = $conn->prepare($sql);
+        $statement->execute();
+
+
+    }
+}
 
 class database
 {
@@ -108,6 +114,8 @@ class collection
         $stmt->execute();
         $class = static::$modelName;
         $stmt->setFetchMode(PDO::FETCH_CLASS,$class);
+        // $stmt->setFetchMode(PDO::FETCH_COLUMN);
+
         $result= $stmt->fetchAll();
         return $result;
     }
@@ -170,7 +178,7 @@ class htmlTable
 
 class todo extends model {
 
-   // column names
+    // column names
     public $owneremail = 'owneremail';
     public $ownerid = 'ownerid';
     public $createddate = 'createddate';
@@ -187,6 +195,8 @@ class todo extends model {
     public static $columnToUpdate='owneremail';
     //data to be updated into column
     public static $updateData = 'nnn@test.com';
+    //id to update
+    public static $idOfColumn = '3';
 
 }
 
@@ -212,7 +222,14 @@ class account extends model
     public static $columnToUpdate='lname';
 
     //data to be inserted into column
-    public static $updateData = 'Abraham';
+    protected static $updateData = 'Abraham';
+
+    //id to update
+    public static $idOfColumn = '6';
+
+    // public static $columnId = 8;
+
+
 }
 
 class string
@@ -227,6 +244,7 @@ class string
         echo '<h3>'.$string.'</h3>';
     }
 }
+
 
 string::printThisInH1('Select All Record From Accounts Table');
 $obj =  accounts::create();
@@ -247,7 +265,7 @@ echo '<br>';
 echo '<br>';
 
 string::printThisInH1('Insert New Record in Accounts Table');
-string::printThisInH3('Select Record ID 6');
+//string::printThisInH3('Select Record ID 6');
 $obj = new Account;
 $obj->save('');
 $obj =  accounts::create();
@@ -258,15 +276,25 @@ echo '<br>';
 echo '<br>';
 
 string::printThisInH1('Update New Record in Accounts Table');
-string::printThisInH3('update lname = Abraham');
+string::printThisInH3('update lname = Abraham where id=9');
 $obj = new Account;
-$obj->save('9');
+$obj->save();
 $obj =  accounts::create();
 $result = $obj -> findAll();
 $tab = new htmlTable;
 $tab->makeTable($result);
 echo '<br>';
 echo '<br>';
+
+
+/*$obj = new account;
+$obj->save();
+echo '<br>';
+
+$obj->delete();
+
+
+
 
 
 
