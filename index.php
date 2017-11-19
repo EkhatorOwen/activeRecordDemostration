@@ -21,7 +21,7 @@ define('USERNAME','oe52');
 define('PASSWORD','EBFDKE2u');
 define('DBNAME','oe52');
 
-class model{
+abstract class model{
 
     // static $tableName;
     static $key;
@@ -98,7 +98,7 @@ class database
         return self::$conn;
     }
 }
-class collection
+abstract class collection
 {
     static public function create()
     {
@@ -196,7 +196,7 @@ class todo extends model {
     //data to be updated into column
     public static $updateData = 'nnn@test.com';
     //id to update
-    public static $idOfColumn = '3';
+    public static $idOfColumn = '';
 
 }
 
@@ -227,7 +227,6 @@ class account extends model
     //id to update
     public static $idOfColumn = '6';
 
-    // public static $columnId = 8;
 
 
 }
@@ -264,11 +263,11 @@ $tab->makeTable($result);
 echo '<br>';
 echo '<br>';
 
-string::printThisInH1('Insert New Record in Accounts Table');
-//string::printThisInH3('Select Record ID 6');
-$obj = new Account;
-$obj->save('');
-$obj =  accounts::create();
+string::printThisInH1('Insert New Record in Todos Table');
+//string::printThisInH3('Insert wher3');
+$obj = new Todo;
+$obj->save();
+$obj =  todos::create();
 $result = $obj -> findAll();
 $tab = new htmlTable;
 $tab->makeTable($result);
@@ -295,6 +294,7 @@ $obj->delete();
 
 
 
+*/
 
 
 
