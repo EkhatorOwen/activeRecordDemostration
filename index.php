@@ -28,17 +28,17 @@ define('DBNAME','oe52');
 include 'model.php';
 include 'database.php';
 include 'collection.php';
-
 include "account.php";
 include "todos.php";
 include "string.php";
 include "todo.php";
+include 'accounts.php';
+include "htmlTable.php";
+
 
 string::printThisInH1('Select All Record From Accounts Table');
-include 'accounts.php';
 $obj =  accounts::create();
 $result = $obj -> findAll();
-include "htmlTable.php";
 $tab = new htmlTable;
 $tab->makeTable($result);
 echo '<br>';
@@ -46,7 +46,6 @@ echo '<br>';
 
 string::printThisInH1('Select One Record From Accounts Table');
 string::printThisInH3('Select Record ID 6');
-
 $obj =  accounts::create();
 $result = $obj -> findOne(6);
 $tab = new htmlTable;
