@@ -1,5 +1,5 @@
 <?php
-final class todo extends model {
+final class todo extends project\model {
 
     // column names
     public $owneremail = 'owneremail';

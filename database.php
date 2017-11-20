@@ -1,15 +1,18 @@
 <?php
+
+namespace project;
+
 class database
 {
 protected static $conn;
 function __construct()
 {
 try {
-self::$conn = new PDO('mysql:host='.SERVERNAME.';dbname='.DBNAME , USERNAME, PASSWORD);
-self::$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+self::$conn = new \PDO('mysql:host='.SERVERNAME.';dbname='.DBNAME , USERNAME, PASSWORD);
+self::$conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 echo 'connected succesfully';
 }
-catch(PDOException $e)
+catch(\PDOException $e)
 {
 echo "Error: " . $e->getMessage();
 }

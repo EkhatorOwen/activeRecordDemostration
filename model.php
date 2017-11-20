@@ -1,4 +1,7 @@
 <?php
+
+namespace project;
+
 abstract class model{
 
     // static $tableName;

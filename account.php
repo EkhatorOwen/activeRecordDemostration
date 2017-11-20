@@ -1,5 +1,6 @@
 <?php
-final class account extends model
+
+final class account extends project\model
 {
 
     //column names

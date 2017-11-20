@@ -1,4 +1,7 @@
 <?php
+
+namespace project;
+
 abstract class collection
 {
     static public function create()
@@ -14,7 +17,7 @@ abstract class collection
         $stmt=$conn->prepare($sql);
         $stmt->execute();
         $class = static::$modelName;
-        $stmt->setFetchMode(PDO::FETCH_CLASS,$class);
+        $stmt->setFetchMode(\PDO::FETCH_CLASS,$class);
         // $stmt->setFetchMode(PDO::FETCH_COLUMN);
 
         $result= $stmt->fetchAll();
@@ -28,7 +31,7 @@ abstract class collection
         $stmt=$conn->prepare($sql);
         $stmt->execute();
         $class = static::$modelName;
-        $stmt->setFetchMode(PDO::FETCH_CLASS,$class);
+        $stmt->setFetchMode(\PDO::FETCH_CLASS,$class);
         $result= $stmt->fetchAll();
         return $result;
     }
@@ -41,7 +44,7 @@ abstract class collection
         $stmt=$conn->prepare($sql);
         $stmt->execute(['table'=>$tableName,'id'=>$id]);
         $class = static::$modelName;
-        $stmt->setFetchMode(PDO::FETCH_CLASS,$class);
+        $stmt->setFetchMode(\PDO::FETCH_CLASS,$class);
         $result= $stmt->fetchAll();
         echo '<br>';
         echo 'The number of rows returned is '.$stmt->rowCount();
