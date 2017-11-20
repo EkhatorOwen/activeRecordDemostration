@@ -1,5 +1,12 @@
 <?php
 
+interface model
+{
+    public function save();
+    public function delete();
+
+}
+
 final class account extends project\model
 {
 

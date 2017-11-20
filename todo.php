@@ -1,4 +1,11 @@
 <?php
+
+interface model
+{
+    public function save();
+    public function delete();
+
+}
 final class todo extends project\model {
 
     // column names
