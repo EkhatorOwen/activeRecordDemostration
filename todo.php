@@ -1,12 +1,12 @@
 <?php
 
-interface model
+interface modelInterface
 {
     public function save();
     public function delete();
 
 }
-final class todo extends project\model {
+final class todo extends project\model implements modelInterface{
 
     // column names
     public $owneremail = 'owneremail';

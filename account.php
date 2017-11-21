@@ -1,13 +1,13 @@
 <?php
 
-interface model
+interface modelInterface
 {
     public function save();
     public function delete();
 
 }
 
-final class account extends project\model
+final class account extends project\model implements modelInterface
 {
 
     //column names
